@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!---->
+
+<!--代理扫描 namespace属性表示当前代理的命名空间，属性值一般情况下等于dao的接口类地址 相当于dao接口实现类 -->
+<mapper namespace="com.mapper.UserMapper">
+
+   <!-- <select id="selectUser" resultType="User">
+        select * from user
+    </select>-->
+  <!--  &lt;!&ndash;#{}中的参数 必须是 emp中的属性名  &ndash;&gt;
+    <insert id="insert" parameterType="emp">
+        insert into emp (name,sex) values (#{name},#{sex})
+    </insert>
+    &lt;!&ndash; int aa=45  如果参数 是基本数据类型  #{}中 的变量名 随意  &ndash;&gt;
+    <delete id="delete" parameterType="_int">
+        delete from emp where id=#{aa}
+    </delete>
+
+    <update id="update" parameterType="emp">
+        update emp set name =#{name} , age=#{age} where id=#{id}
+    </update>-->
+   <!--
+   跟实体类取一个别名
+   -->
+   <resultMap id="BaseResultMap" type="com.pojo.User">
+      <id property="user_id" column="user_id"  jdbcType="INTEGER" />
+      <result property="user_num" column="user_num"  jdbcType="VARCHAR"/>
+      <result property="user_name" column="user_name"  jdbcType="VARCHAR"/>
+      <result property="user_addr" column="user_addr"  jdbcType="VARCHAR"/>
+      <result property="create_date" column="create_date"  jdbcType="VARCHAR"/>
+   </resultMap>
+
+   <!--为数据库的所有字段取一个别名，避免用*-->
+   <sql id="Base_Column_List">
+      user_id, user_num, user_name, user_addr, create_date
+   </sql>
+
+   <!--做分页查询-->
+   <select id="findByPage" parameterType="Map" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from user1
+      <if test="start!=null and size!=null">
+         limit #{start},#{size}
+      </if>
+   </select>
+
+   <select id="get" parameterType="_int" resultType="User">
+      select * from user1 where user_id= #{user_id}
+   </select>
+
+   <update id="edit" parameterType="User">
+      update user1 set user_num=#{user_num}, user_name=#{user_name},user_addr=#{user_addr},create_date=#{create_date}   where user_id= #{user_id}
+   </update>
+
+
+
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+         http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd">
+<!--1.开启controller层的 类 的注解 @Controller-->
+    <context:component-scan base-package="com.controller"/>
+
+    <!--2.SpringMVC 自己的 方法上的和参数上的 注解
+           2.1 响应编码 ，string  json
+       -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8" /><!--有参构造的参数赋值-->
+            </bean>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+<!--3.和web.xml中的mvc配置呼应-->
+    <!--如果请求是servlet请求，用默认的DispatcherServlet来处理-->
+    <mvc:default-servlet-handler/>
+
+    <!--4.视图解析器 配置jsp的前后缀 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+</beans>
